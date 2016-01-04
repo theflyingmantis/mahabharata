@@ -1,0 +1,24 @@
+<html>
+<head>
+<title>{{title}}</title>
+<!--
+<link type="text/css" rel="stylesheet" href="{{url_for('static',filename='css/materialize.css')}}"  media="screen,projection"/>
+-->
+</head>
+<body>
+<center>
+<h2>Mahabharata</h2></center><hr><br>
+{% block content %}{% endblock %}
+<br><br>
+<strong><u>
+{%for message in get_flashed_messages()%}
+{{message}}
+{%endfor%}</u>
+</strong>
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js/materialize.js')}}"></script>
+-->
+<div align="right">Made by Abhinav Rai</div>
+</body>
+</html>
