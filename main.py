@@ -55,7 +55,8 @@ def red():
 		output=check_output("./red")
 	elif extension=="py":
 		first="python"
-		#******************************MAKE FOR PYTHON - CHECK FIRST - HOW TO TAKE OUTPUT
+		output=check_output([first,file_name])
+		print output
 	#elif extension=="java":
 		#***********************MAKE FOR JAVA ALSO
 	#***************CHECK FOR FILE CHANGE
@@ -76,6 +77,8 @@ def blue():
 		output=check_output("./blue")
 	elif extension=="py":
 		first="python"
+		output=check_output([first,file_name])
+		print output
 		#******************************MAKE FOR PYTHON - CHECK FIRST - HOW TO TAKE OUTPUT
 	#elif extension=="java":
 		#***********************MAKE FOR JAVA ALSO

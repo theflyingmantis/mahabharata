@@ -100,7 +100,10 @@ function load(){
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
-					document.getElementById(answer.output).src = "hex_b.gif";
+					var k=answer.output;
+					console.log(k);
+					k = k.substring(0, k.length - 1);
+					document.getElementById(k).src = "hex_b.gif";
 				alert("turn"+turn);
 
 				//$('#result').html(answer.ans);
