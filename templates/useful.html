@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p align="center">Click the button to create an IMG element.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<div></div>
+<script>
+function myFunction() {
+var k="A1";
+    var x = document.createElement("IMG");
+    x.setAttribute("src", "img_pulpit.jpg");
+    x.setAttribute("width", "34");
+    //x.setAttribute("width", "28");
+    x.setAttribute("title", k);
+x.setAttribute("id",k);
+x.setAttribute("align","middle");
+    document.body.appendChild(x);
+//x.align="center";
+func("A1");
+}
+</script>
+
+<script>
+function func(x){
+var image=document.getElementById(x);
+image.src="smiley.gif";}
+</script>
+
+</body>
+</html>

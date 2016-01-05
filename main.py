@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, url_for, flash, redirect, session,make_response,jsonify
 from functools import wraps,update_wrapper
+import subprocess
+from subprocess import *
 
 app = Flask(__name__, static_url_path='')
 app.secret_key="secret"
@@ -28,7 +30,7 @@ def bot():
 		session['p1f']=p1f
 		session['p2f']=p2f
 		session['ext1']=ext1[1]
-		session['ext2']=ext2[1]
+		session['ext2']=ext2[1]	#Best way is by session - Done bit baseless in AHA3d project
 		return redirect(url_for('game'))
 	return render_template('c_vs_c.html')
 
@@ -42,6 +44,49 @@ def game():
 	ext2=session['ext2']
 	return render_template('game.html',p1=p1,p2=p2,p1f=p1f,p2f=p2f,ext1=ext1,ext2=ext2)
 	
+@app.route("/red_turn", methods=['GET', 'POST'])
+def red():
+	file_name = request.args.get('file_name')
+	extension = request.args.get('extension')
+	#*******************************CHECK FOR FILE CHANGE ----MAKE FUNCTION
+	if extension=="cpp":
+		first="g++"
+		call([first,file_name,"-o","red"])
+		output=check_output("./red")
+	elif extension=="py":
+		first="python"
+		#******************************MAKE FOR PYTHON - CHECK FIRST - HOW TO TAKE OUTPUT
+	#elif extension=="java":
+		#***********************MAKE FOR JAVA ALSO
+	#***************CHECK FOR FILE CHANGE
+	#***************Check if he has won - IF YES, Then make win variable =1;
+	#***************UPDATE FILE. CHange 1 to 0 and output element to Red
+	win=0#Change it later
+	data={"win":win,"output":output}
+	return jsonify(data)
+
+@app.route("/blue_turn", methods=['GET', 'POST'])
+def blue():
+	file_name = request.args.get('file_name')
+	extension = request.args.get('extension')
+	#*******************************CHECK FOR FILE CHANGE ----MAKE FUNCTION
+	if extension=="cpp":
+		first="g++"
+		call([first,file_name,"-o","blue"])
+		output=check_output("./blue")
+	elif extension=="py":
+		first="python"
+		#******************************MAKE FOR PYTHON - CHECK FIRST - HOW TO TAKE OUTPUT
+	#elif extension=="java":
+		#***********************MAKE FOR JAVA ALSO
+	#***************CHECK FOR FILE CHANGE
+	#***************Check if he has won - IF YES, Then make win variable =1;
+	#***************UPDATE FILE. CHange 1 to 0 and output element to Red
+	win=0#change it later
+	data={"win":win,"output":output}
+	return jsonify(data)
+
+
 
 
 if __name__ == "__main__":

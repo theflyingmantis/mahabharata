@@ -1,15 +1,133 @@
-{% extends "base.html" %}
-{% block content %}
-<div align="center">
-<table><tr><td>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game</title>
+</head>
+<body onclick="show_coordinate(event)">
+<img src="hex_bg.gif" id="back">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
+function show_coordinate(event)
+{
+	X = event.pageX;
+	X=X-13;
+    Y = event.pageY;
+    Y=Y-12;
+    console.log(Y+" "+X);
+}
 
+for(var j=0;j<11;j++)
+{
+	for(var i=1;i<=11;i++)
+	{
+		var id = String.fromCharCode(65+j) + i;
 
+		var x = document.createElement("IMG");
+		
+    		x.setAttribute("src", "hex_t.gif");
+    	x.setAttribute("title",id);
+    	x.setAttribute("id",id);
+		document.body.appendChild(x);
 
-
+		document.getElementById(id).style.position = "absolute";
+		var top1 = 18 + (i-1) * 24 + j * 24;
+		top1 += "px";
+		document.getElementById(id).style.top = top1;
+		var left1 = 159 - (i-1) * 14 + j * 14;
+		left1 += "px";
+		document.getElementById(id).style.left = left1;
+	}
+}
 </script>
-</td>
-</tr>
-</table>
-</div>
-{%endblock%}
+<!--
+<script>
+var image=document.getElementById("B6");
+image.src="hex_r.gif";
+</script>
+-->
+
+<script>
+var turn=1;
+var f=setInterval(load,5000);
+function load(){
+	if(turn==1)
+	{
+		var p1f="{{p1f}}";
+		var ext1="{{ext1}}";
+	$.ajax({
+			type:"GET",
+			url:"/red_turn",
+			data: {file_name: p1f,extension:ext1 },
+			success: function(answer)
+			{
+				console.log("red"+answer);
+				turn=0;
+				alert("turn"+turn);
+				if(answer.win==1)
+					{clearTimeout(f);
+					//*************************DO SOMETHING SOMETHINg :P
+
+					}
+				document.getElementById(answer.output).src = "hex_r.gif";
+				//var k=answer.w;//*****************make it
+				//$('#').html(answer.ans);
+			},
+			error: function(err)
+			{
+				console.log(err);
+				alert(err);
+			}
+		});
+		
+	}
+	else if(turn==0)
+	{
+		
+		var p2f="{{p2f}}";
+		var ext2="{{ext2}}";
+		
+		$.ajax({
+			type:"GET",
+			url:"/blue_turn",
+			data: {file_name: p2f,extension:ext2 },
+			success: function(answer)
+			{
+				console.log("blue"+answer);
+				turn=1;
+				if(answer.win==1)
+					{clearTimeout(f);
+					//*************************DO SOMETHING SOMETHINg :P
+
+					}
+					document.getElementById(answer.output).src = "hex_b.gif";
+				alert("turn"+turn);
+
+				//$('#result').html(answer.ans);
+			},
+			error: function(err)
+			{
+				console.log(err);
+				alert(err);
+			}
+		});
+
+	}
+}
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
