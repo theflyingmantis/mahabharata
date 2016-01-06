@@ -15,6 +15,32 @@ def home():
 	title="Mahabharata"
 	return render_template('index.html',title=title)
 
+@app.route("/h_vs_c",methods=['GET','POST'])
+def h_vs_c():
+	error=None;
+	if (request.method=='POST'):
+		p1=request.form['p1']
+		p1f=request.form['p1f']
+		playf=request.form['playf']
+		ext1=p1f.split('.')
+		session['p1h']=p1
+		session['p1fh']=p1f
+		session['ext1h']=ext1[1]
+		session['playf']=playf
+		#Best way is by session - Done bit baseless in AHA3d project
+		if ext1[1]=="cpp":
+			call(["g++",p1f,"-o","red"])
+		#if ext1[1]=="java"*********************************************MAKE FOR JAVA
+		return redirect(url_for('game2'))
+	return render_template('h_vs_c.html',title="U Vs Ur bot")
+
+@app.route("/game2")
+def game2():
+	p1=session['p1h']
+	p1f=session['p1fh']
+	ext1=session['ext1h']
+	playf=session['playf']
+	return render_template('game2.html',p1=p1,p1f=p1f,ext1=ext1,playf=playf)
 
 
 @app.route("/c_vs_c",methods=['GET','POST'])
@@ -33,8 +59,13 @@ def bot():
 		session['p2f']=p2f
 		session['ext1']=ext1[1]
 		session['ext2']=ext2[1]	#Best way is by session - Done bit baseless in AHA3d project
+		if ext1[1]=="cpp":
+			call(["g++",p1f,"-o","red"])
+		if ext1[1]=="cpp":
+			call(["g++",p2f,"-o","blue"])
+		#if ext1[1]=="java"*********************************************MAKE FOR JAVA
 		return redirect(url_for('game'))
-	return render_template('c_vs_c.html')
+	return render_template('c_vs_c.html',title="Mahabharata - Fill Details")
 
 @app.route("/game",methods=['GET','POST'])
 def game():
@@ -56,7 +87,7 @@ def check(i,j):
 def dfs(i,j,lst):
 	if lst[i][j] == -1:
 		lst[i][j]==100
-		print "Blue Won"
+		print "Game - Ends !!"
 		
 	lst[i][j]=10
 	if check(i+1,j):
@@ -106,6 +137,34 @@ def check_blue():
 			return 1
 	return 0
 
+def check_red():
+	fob=open('board_file.txt','r')
+	list1=[]
+	list1=fob.readlines()
+	fob.close()
+	lst=[]
+	for i in range(0,11):
+		list_tmp=[]
+		for j in range(i*11+1,i*11+12):
+			if list1[j].find("R")!=-1 and j%11!=0:
+				list_tmp.append(1)
+			elif list1[j].find("R")!=-1 and j%11==0:
+				list_tmp.append(-1)
+			else:
+				list_tmp.append(0)
+				
+		lst.append(list_tmp)
+	
+	for i in range(0,11):
+		if lst[i][0]==1:
+			dfs(i,0,lst)
+	
+	for i in range(0,11):
+		if lst[i][10]==10:
+			return 1
+	return 0
+
+
 
 
 @app.route("/red_turn", methods=['GET', 'POST'])
@@ -151,8 +210,8 @@ def red():
 	fob.writelines(list1)
 	fob.close()
 	#***************CHECK FOR FILE CHANGE--------------Partially Done
-	#***************Check if he has won - IF YES, Then make win variable =1;
-	win=0#Change it later
+	#***************Check if he has won - IF YES, Then make win variable =1;-------------------Testing left
+	win=check_red()
 	output = output[:-1]
 	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag}
 	return jsonify(data)
@@ -210,7 +269,34 @@ def blue():
 	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag}
 	return jsonify(data)
 
-
+@app.route("/blue_turn_human")
+def hum():
+	output = request.args.get('inp')
+	fob=open('board_file.txt','r')
+	list1=[]
+	list1=fob.readlines()
+	
+	wrong_selected=0
+	flag=0
+	output=output+" "
+	for i in range(1,122):
+		if list1[i].find(output)!=-1:
+			if list1[i].find("U")==-1:
+				wrong_selected=1
+			list1[i]=list1[i].replace("U","B")
+			flag=1
+	list1[0]="1\n"
+	fob.close()
+	fob=open('board_file.txt','w')
+	fob.writelines(list1)
+	fob.close()
+	#***************CHECK FOR FILE CHANGE--------------Partially Done
+	win=check_blue()
+	#***************Check if he has won - IF YES, Then make win variable =1;-----------TEsting left
+	
+	output = output[:-1]
+	data={"win":win,"output":output,"wrong_selected":wrong_selected,"flag":flag}
+	return jsonify(data)
 
 
 if __name__ == "__main__":

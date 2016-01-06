@@ -48,7 +48,7 @@ image.src="hex_r.gif";
 
 <script>
 var turn=1;
-var f=setInterval(load,500);
+var f=setInterval(load,350);
 function load(){
 	if(turn==1)
 	{
@@ -77,6 +77,8 @@ function load(){
 					}
 				if(answer.win==1)
 					{clearTimeout(f);
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Red -- {{p1}} WON!!");
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
@@ -87,7 +89,7 @@ function load(){
 			error: function(err)
 			{
 				console.log(err);
-				alert("error");
+				
 			}
 		});
 		
@@ -121,6 +123,7 @@ function load(){
 					}
 				if(answer.win==1)
 					{clearTimeout(f);
+						alert("Blue - {{p2}} Won!!");
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
@@ -133,7 +136,7 @@ function load(){
 			error: function(err)
 			{
 				console.log(err);
-				alert("error");
+				
 			}
 		});
 
@@ -142,6 +145,9 @@ function load(){
 </script>
 
 
+<h1>{{p1}} Vs {{p2}}</h1>
+<font color="Red">Player 1 = {{p1}}</font><br>
+<font color="blue">Player 2={{p2}}</font>
 
 
 

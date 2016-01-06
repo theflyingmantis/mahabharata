@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Game</title>
+	<title>Bot Vs U</title>
 </head>
 <body onclick="show_coordinate(event)">
 <img src="hex_bg.gif" id="back">
@@ -14,7 +14,7 @@ function show_coordinate(event)
 	X=X-13;
     Y = event.pageY;
     Y=Y-12;
-    console.log(Y+" "+X);
+    //console.log(Y+" "+X);
 }
 
 for(var j=0;j<11;j++)
@@ -46,10 +46,20 @@ image.src="hex_r.gif";
 </script>
 -->
 
+
+<form action="" method="POST" id="loginform" onsubmit="return false">
+	Expression: <input type = 'text' name='human' placeholder="Enter Cell Id"><br>
+	<center><input type="submit" value="Submit"></center>
+</form>
+
 <script>
-var turn=1;
-var f=setInterval(load,2000);
+var turn=0;
+if ("{{playf}}"=="N")
+	{turn=1;}
+load();
 function load(){
+
+	console.log("load"+turn);
 	if(turn==1)
 	{
 		var p1f="{{p1f}}";
@@ -60,77 +70,93 @@ function load(){
 			data: {file_name: p1f,extension:ext1 },
 			success: function(answer)
 			{
-				console.log("red"+answer);
+				console.log("red"+answer.output);
 				turn=0;
-				//alert("turn"+turn);
-				//if(answer.file_changed==1)
-				//	{alert("Red Changed the file and thus lost. Blue is winner");clearTimeout(f);
-				//*************DO SOMETHING MORE
-				//	}
+				
+				
+				var flag=0;
 			if(answer.wrong_selected==1)
-					{alert("Red Overwrote and thus lost. Blue is winner");clearTimeout(f);
+					{alert("Red Overwrote and thus lost. Blue is winner");flag=1;;
 				//*************DO SOMETHING MORE
 					}
 			if(answer.flag==0)
-					{alert("Red Gave wrong input and thus lost. Blue is winner");clearTimeout(f);
+					{alert("Red Gave wrong input and thus lost. Blue is winner");flag=1;;
 				//*************DO SOMETHING MORE
 					}
 				if(answer.win==1)
-					{clearTimeout(f);
+					{flag=1;
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Red -- {{p1}} WON!!");
+
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
 				document.getElementById(answer.output).src = "hex_r.gif";
-				//var k=answer.w;//*****************make it
-				//$('#').html(answer.ans);
+				if(flag!=1)
+					setTimeout(function(){ load(); }, 1000);
 			},
 			error: function(err)
 			{
 				console.log(err);
-				alert(err);
+				
 			}
 		});
 		
 	}
 	else if(turn==0)
 	{
-		alert("YP");
-		var p2f="{{p2f}}";
-		var ext2="{{ext2}}";
+		console.log("Ready");
+	$("form").on("submit",function()
+	{
+		console.log("Form Submitted - YAY");
+		var inp=$('input[name="human"]').val()
+		console.log(inp);
+		
 		
 		$.ajax({
 			type:"GET",
-			url:"/blue_turn",
-			data: {file_name: p2f,extension:ext2 },
+			url:"/blue_turn_human",
+			data: {inp: inp},
+
 			success: function(answer)
 			{
-				console.log("blue"+answer);
+				var flag=0;
+				console.log("Blue"+answer.output);
 				turn=1;
-				if(answer.win==1)
-					{clearTimeout(f);
-					//*************************DO SOMETHING SOMETHINg :P
-
+				
+			if(answer.wrong_selected==1)
+					{alert("Blue Overwrote and thus lost. Red is winner");flag=1;
 					}
-					var k=answer.output;
-					console.log(k);
-					//k = k.substring(0, k.length - 1);
+			if(answer.flag==0)
+					{alert("Blue Gave wrong input and thus lost. Red is winner");flag=1;
+					}
+				if(answer.win==1)
+					{
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Blue WON!!");
+					flag=1;
+					}
 					document.getElementById(answer.output).src = "hex_b.gif";
-				alert("turn"+turn);
-
-				//$('#result').html(answer.ans);
+					$("form").unbind('submit');
+					if(flag!=1)
+						load();
 			},
 			error: function(err)
 			{
 				console.log(err);
-				alert(err);
 			}
 		});
 
+
+
+	});
 	}
 }
 </script>
 
-
+<h1>{{p1}} Vs U</h1>
+<font color="Red">Player 1 = {{p1}}</font><br>
+<font color="blue">Player 2 = U</font>
 
 
 

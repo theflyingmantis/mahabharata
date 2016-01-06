@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Enter Details</h3>
+<form action="" method="POST" id="loginform">
+	<font color="red">
+	Player 1: <input type = 'text' name='p1' placeholder="Player 1 Name"><br>
+	Player 1 file name: <input type = 'text' name='p1f' placeholder="Player 1 file name"><br><br>
+	You Want to Play First  <input type="text" placeholder="Y for Yes and N for no" name="playf"><br>
+	</font>
+	
+	<input type="submit" value="Play">
+</form>
+{%endblock%}

@@ -6,8 +6,8 @@ int main()
 {
    cout<<"C6";
     ofstream myfile;
-  myfile.open ("board_file.txt");
-  myfile << "Writing this to a file.\n";
+  //myfile.open ("board_file.txt");
+  //myfile << "Writing this to a file.\n";
   myfile.close();
   return 0;
 

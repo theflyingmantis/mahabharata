@@ -4,7 +4,7 @@
 using namespace std;
 int main()
 {
-   cout<<"C6";
+   cout<<"Yo";
     ofstream myfile;
   //myfile.open ("board_file.txt");
   //myfile << "Writing this to a file.\n";
