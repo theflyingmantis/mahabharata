@@ -40,6 +40,7 @@ def game2():
 	p1f=session['p1fh']
 	ext1=session['ext1h']
 	playf=session['playf']
+	call(["python","new_file.py"])
 	return render_template('game2.html',p1=p1,p1f=p1f,ext1=ext1,playf=playf)
 
 
@@ -61,9 +62,12 @@ def bot():
 		session['ext2']=ext2[1]	#Best way is by session - Done bit baseless in AHA3d project
 		if ext1[1]=="cpp":
 			call(["g++",p1f,"-o","red"])
-		if ext1[1]=="cpp":
+		if ext2[1]=="cpp":
 			call(["g++",p2f,"-o","blue"])
-		#if ext1[1]=="java"*********************************************MAKE FOR JAVA
+		if ext1[1]=="java":
+			call(["javac",p1f])
+		if ext2[1]=="java":
+			call(["javac",p2f])
 		return redirect(url_for('game'))
 	return render_template('c_vs_c.html',title="Mahabharata - Fill Details")
 
@@ -75,7 +79,13 @@ def game():
 	p2f=session['p2f']
 	ext1=session['ext1']
 	ext2=session['ext2']
+	call(["python","new_file.py"])
 	return render_template('game.html',p1=p1,p2=p2,p1f=p1f,p2f=p2f,ext1=ext1,ext2=ext2)
+
+@app.route("/game3",methods=['GET','POST'])
+def game3():
+	call(["python","new_file.py"])
+	return render_template('game3.html')
 	
 def check(i,j):
 	if i>10 or i<0:
@@ -174,6 +184,7 @@ def red():
 	fob=open('board_file.txt','r')
 	list1=[]
 	list1=fob.readlines()
+	fn=file_name.split('.')
 	#*******************************CHECK FOR FILE CHANGE ----MAKE FUNCTION---Partially working----make file readonly!!
 	if extension=="cpp":
 		first="g++"
@@ -183,7 +194,8 @@ def red():
 		first="python"
 		output=check_output([first,file_name])
 		output = output[:-1]
-	#elif extension=="java":
+	elif extension=="java":
+		output=check_output(["java",fn[0] ])
 		#***********************MAKE FOR JAVA ALSO
 	fob1=open('board_file.txt','r')
 	#*************************Check if we get any compilation error or while loop
@@ -209,8 +221,6 @@ def red():
 	fob=open('board_file.txt','w')
 	fob.writelines(list1)
 	fob.close()
-	#***************CHECK FOR FILE CHANGE--------------Partially Done
-	#***************Check if he has won - IF YES, Then make win variable =1;-------------------Testing left
 	win=check_red()
 	output = output[:-1]
 	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag}
@@ -223,20 +233,16 @@ def blue():
 	fob=open('board_file.txt','r')
 	list1=[]
 	list1=fob.readlines()
-	#*******************************CHECK FOR FILE CHANGE ----MAKE FUNCTION
+	fn=file_name.split('.')
 	if extension=="cpp":
 		first="g++"
-		#call([first,file_name,"-o","blue"])
 		output=check_output("./blue")
 	elif extension=="py":
 		first="python"
 		output=check_output([first,file_name])
 		output = output[:-1]
-	#elif extension=="java":
-		#***********************MAKE FOR JAVA ALSO
-	#***************CHECK FOR FILE CHANGE
-	#***************Check if he has won - IF YES, Then make win variable =1;
-	#***************UPDATE FILE. CHange 1 to 0 and output element to Red
+	elif extension=="java":
+		output=check_output(["java",fn[0] ])
 	fob1=open('board_file.txt','r')
 	#*************************Check if we get any compilation error or while loop
 	output=output+" "
@@ -292,6 +298,35 @@ def hum():
 	fob.close()
 	#***************CHECK FOR FILE CHANGE--------------Partially Done
 	win=check_blue()
+	#***************Check if he has won - IF YES, Then make win variable =1;-----------TEsting left
+	
+	output = output[:-1]
+	data={"win":win,"output":output,"wrong_selected":wrong_selected,"flag":flag}
+	return jsonify(data)
+
+@app.route("/red_turn_human")
+def hum1():
+	output = request.args.get('inp')
+	fob=open('board_file.txt','r')
+	list1=[]
+	list1=fob.readlines()
+	
+	wrong_selected=0
+	flag=0
+	output=output+" "
+	for i in range(1,122):
+		if list1[i].find(output)!=-1:
+			if list1[i].find("U")==-1:
+				wrong_selected=1
+			list1[i]=list1[i].replace("U","R")
+			flag=1
+	list1[0]="1\n"
+	fob.close()
+	fob=open('board_file.txt','w')
+	fob.writelines(list1)
+	fob.close()
+	#***************CHECK FOR FILE CHANGE--------------Partially Done
+	win=check_red()
 	#***************Check if he has won - IF YES, Then make win variable =1;-----------TEsting left
 	
 	output = output[:-1]

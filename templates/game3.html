@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bot Vs U</title>
+</head>
+<body onclick="show_coordinate(event)">
+<img src="hex_bg.gif" id="back">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+function bar(k){
+			console.log("In Bar");
+			var inp=k;
+			console.log(inp);
+
+		$.ajax({
+			type:"GET",
+			url:"/blue_turn_human",
+			data: {inp: inp},
+
+			success: function(answer)
+			{
+				var flag=0;
+				console.log("Blue"+answer.output);
+				
+			if(answer.wrong_selected==1)
+					{alert("Blue Overwrote and thus lost. Red is winner");flag=1;
+					}
+			if(answer.flag==0)
+					{alert("Blue Gave wrong input and thus lost. Red is winner");flag=1;
+					}
+				if(answer.win==1)
+					{
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Blue WON!!");
+					flag=1;
+					}
+					document.getElementById(answer.output).src = "hex_b.gif";
+					$("form").unbind('submit');
+					if(flag!=1)
+						load();
+			},
+			error: function(err)
+			{
+				console.log(err);
+			}
+		});
+	}
+
+function bar1(k){
+			console.log("In Bar1");
+			var inp=k;
+			console.log(inp);
+
+		$.ajax({
+			type:"GET",
+			url:"/red_turn_human",
+			data: {inp: inp},
+
+			success: function(answer)
+			{
+				var flag=0;
+				console.log("Red"+answer.output);
+				
+			if(answer.wrong_selected==1)
+					{alert("Red Overwrote and thus lost. Blue is winner");flag=1;
+					}
+			if(answer.flag==0)
+					{alert("Red Gave wrong input and thus lost. Blue is winner");flag=1;
+					}
+				if(answer.win==1)
+					{
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Red WON!!");
+					flag=1;
+					}
+					document.getElementById(answer.output).src = "hex_r.gif";
+			},
+			error: function(err)
+			{
+				console.log(err);
+			}
+		});
+	}
+</script>
+<script>
+var total=0;
+function foo()
+{
+	var a=this.id;
+	total++;
+	if(total%2==0)
+	bar(a);
+	else bar1(a);
+
+}
+</script>
+<script>
+function show_coordinate(event)
+{
+	X = event.pageX;
+	X=X-13;
+    Y = event.pageY;
+    Y=Y-12;
+    //console.log(Y+" "+X);
+}
+
+for(var j=0;j<11;j++)
+{
+	for(var i=1;i<=11;i++)
+	{
+		var id = String.fromCharCode(65+j) + i;
+
+		var x = document.createElement("IMG");
+    		x.setAttribute("src", "hex_t.gif");
+    	x.setAttribute("title",id);
+    	x.setAttribute("id",id);
+		document.body.appendChild(x);
+
+		document.getElementById(id).style.position = "absolute";
+		var top1 = 18 + (i-1) * 24 + j * 24;
+		top1 += "px";
+		document.getElementById(id).style.top = top1;
+		var left1 = 159 - (i-1) * 14 + j * 14;
+		left1 += "px";
+		document.getElementById(id).style.left = left1;
+		document.getElementById(id).onclick=foo;
+	}
+}
+</script>
+
+
+Click On the cell !!
+
+
+
+<div align="right">Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</div>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+

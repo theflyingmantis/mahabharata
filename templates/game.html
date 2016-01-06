@@ -28,7 +28,6 @@ for(var j=0;j<11;j++)
     	x.setAttribute("title",id);
     	x.setAttribute("id",id);
 		document.body.appendChild(x);
-
 		document.getElementById(id).style.position = "absolute";
 		var top1 = 18 + (i-1) * 24 + j * 24;
 		top1 += "px";
@@ -36,15 +35,19 @@ for(var j=0;j<11;j++)
 		var left1 = 159 - (i-1) * 14 + j * 14;
 		left1 += "px";
 		document.getElementById(id).style.left = left1;
+		document.getElementById(id).onclick=foo;
 	}
 }
 </script>
-<!--
+
 <script>
-var image=document.getElementById("B6");
-image.src="hex_r.gif";
+function foo()
+{
+	var a=this.value;
+	alert(a);
+
+}
 </script>
--->
 
 <script>
 var turn=1;
@@ -144,10 +147,10 @@ function load(){
 }
 </script>
 
-
 <h1>{{p1}} Vs {{p2}}</h1>
 <font color="Red">Player 1 = {{p1}}</font><br>
 <font color="blue">Player 2={{p2}}</font>
+<div align="right">Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</div>
 
 
 

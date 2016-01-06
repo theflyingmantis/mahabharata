@@ -1,4 +1,4 @@
-
+<!-- With TEXT BAR FPRM OPTION
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +7,14 @@
 <body onclick="show_coordinate(event)">
 <img src="hex_bg.gif" id="back">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+function foo()
+{
+	var a=this.id;
+	
+
+}
+</script>
 <script>
 function show_coordinate(event)
 {
@@ -36,15 +44,11 @@ for(var j=0;j<11;j++)
 		var left1 = 159 - (i-1) * 14 + j * 14;
 		left1 += "px";
 		document.getElementById(id).style.left = left1;
+		document.getElementById(id).onclick=foo;
 	}
 }
 </script>
-<!--
-<script>
-var image=document.getElementById("B6");
-image.src="hex_r.gif";
-</script>
--->
+
 
 
 <form action="" method="POST" id="loginform" onsubmit="return false">
@@ -86,7 +90,7 @@ function load(){
 				if(answer.win==1)
 					{flag=1;
 						if(answer.wrong_selected!=1 && answer.flag==1)
-						alert("Red -- {{p1}} WON!!");
+						alert("Red  {{p1}} WON!!");
 
 					//*************************DO SOMETHING SOMETHINg :P
 
@@ -158,6 +162,178 @@ function load(){
 <font color="Red">Player 1 = {{p1}}</font><br>
 <font color="blue">Player 2 = U</font>
 
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bot Vs U</title>
+</head>
+<body onclick="show_coordinate(event)">
+<img src="hex_bg.gif" id="back">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+var turn=0;
+if ("{{playf}}"=="N")
+	{turn=1;}
+load();
+function load(){
+
+	console.log("load"+turn);
+	if(turn==1)
+	{
+		var p1f="{{p1f}}";
+		var ext1="{{ext1}}";
+	$.ajax({
+			type:"GET",
+			url:"/red_turn",
+			data: {file_name: p1f,extension:ext1 },
+			success: function(answer)
+			{
+				console.log("red"+answer.output);
+				turn=0;
+				
+				
+				var flag=0;
+			if(answer.wrong_selected==1)
+					{alert("Red Overwrote and thus lost. Blue is winner");flag=1;;
+				//*************DO SOMETHING MORE
+					}
+			if(answer.flag==0)
+					{alert("Red Gave wrong input and thus lost. Blue is winner");flag=1;;
+				//*************DO SOMETHING MORE
+					}
+				if(answer.win==1)
+					{flag=1;
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Red -- {{p1}} WON!!");
+
+					//*************************DO SOMETHING SOMETHINg :P
+
+					}
+				document.getElementById(answer.output).src = "hex_r.gif";
+				if(flag!=1)
+					setTimeout(function(){ load(); }, 1000);
+			},
+			error: function(err)
+			{
+				console.log(err);
+				
+			}
+		});
+		
+	}
+	else if(turn==0)
+	{
+		console.log("Ready");
+		
+
+		
+	}
+}
+function bar(k){
+			console.log("In Bar");
+			var inp=k;
+			console.log(inp);
+
+		$.ajax({
+			type:"GET",
+			url:"/blue_turn_human",
+			data: {inp: inp},
+
+			success: function(answer)
+			{
+				var flag=0;
+				console.log("Blue"+answer.output);
+				turn=1;
+				
+			if(answer.wrong_selected==1)
+					{alert("Blue Overwrote and thus lost. Red is winner");flag=1;
+					}
+			if(answer.flag==0)
+					{alert("Blue Gave wrong input and thus lost. Red is winner");flag=1;
+					}
+				if(answer.win==1)
+					{
+						if(answer.wrong_selected!=1 && answer.flag==1)
+						alert("Blue WON!!");
+					flag=1;
+					}
+					document.getElementById(answer.output).src = "hex_b.gif";
+					$("form").unbind('submit');
+					if(flag!=1)
+						load();
+			},
+			error: function(err)
+			{
+				console.log(err);
+			}
+		});
+		}
+</script>
+<script>
+function foo()
+{
+	var a=this.id;
+	bar(a);
+
+}
+</script>
+<script>
+function show_coordinate(event)
+{
+	X = event.pageX;
+	X=X-13;
+    Y = event.pageY;
+    Y=Y-12;
+    //console.log(Y+" "+X);
+}
+
+for(var j=0;j<11;j++)
+{
+	for(var i=1;i<=11;i++)
+	{
+		var id = String.fromCharCode(65+j) + i;
+
+		var x = document.createElement("IMG");
+    		x.setAttribute("src", "hex_t.gif");
+    	x.setAttribute("title",id);
+    	x.setAttribute("id",id);
+		document.body.appendChild(x);
+
+		document.getElementById(id).style.position = "absolute";
+		var top1 = 18 + (i-1) * 24 + j * 24;
+		top1 += "px";
+		document.getElementById(id).style.top = top1;
+		var left1 = 159 - (i-1) * 14 + j * 14;
+		left1 += "px";
+		document.getElementById(id).style.left = left1;
+		document.getElementById(id).onclick=foo;
+	}
+}
+</script>
+
+
+Click On the cell !!
+
+
+<h1>{{p1}} Vs You</h1>
+<font color="Red">Player 1 = {{p1}}</font><br>
+<font color="blue">Player 2 = You</font>
+<div align="right">Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</div>
 
 
 

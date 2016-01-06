@@ -6,7 +6,7 @@ for i in range(1,122):
 	if words[1]=="U":
 		print words[0]
 		fob.close()
-		# fob=open("board_file.txt",'w')
+		# fob=open("board_file",'w')
 		# fob.writelines(words)
 		# fob.close()
 		break
