@@ -48,7 +48,7 @@ image.src="hex_r.gif";
 
 <script>
 var turn=1;
-var f=setInterval(load,500);
+var f=setInterval(load,2000);
 function load(){
 	if(turn==1)
 	{
@@ -60,7 +60,7 @@ function load(){
 			data: {file_name: p1f,extension:ext1 },
 			success: function(answer)
 			{
-				console.log("red"+answer.output);
+				console.log("red"+answer);
 				turn=0;
 				//alert("turn"+turn);
 				//if(answer.file_changed==1)
@@ -87,14 +87,14 @@ function load(){
 			error: function(err)
 			{
 				console.log(err);
-				alert("error");
+				alert(err);
 			}
 		});
 		
 	}
 	else if(turn==0)
 	{
-		
+		alert("YP");
 		var p2f="{{p2f}}";
 		var ext2="{{ext2}}";
 		
@@ -111,29 +111,18 @@ function load(){
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
-				if(answer.wrong_selected==1)
-					{alert("Blue Overwrote and thus lost. Red is winner");clearTimeout(f);
-				//*************DO SOMETHING MORE
-					}
-			if(answer.flag==0)
-					{alert("Blue Gave wrong input and thus lost. Red is winner");clearTimeout(f);
-				//*************DO SOMETHING MORE
-					}
-				if(answer.win==1)
-					{clearTimeout(f);
-					//*************************DO SOMETHING SOMETHINg :P
-
-					}
 					var k=answer.output;
 					console.log(k);
 					//k = k.substring(0, k.length - 1);
 					document.getElementById(answer.output).src = "hex_b.gif";
-				
+				alert("turn"+turn);
+
+				//$('#result').html(answer.ans);
 			},
 			error: function(err)
 			{
 				console.log(err);
-				alert("error");
+				alert(err);
 			}
 		});
 
