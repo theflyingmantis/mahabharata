@@ -97,7 +97,6 @@ def check(i,j):
 def dfs(i,j,lst):
 	if lst[i][j] == -1:
 		lst[i][j]==100
-		print "Game - Ends !!"
 		
 	lst[i][j]=10
 	if check(i+1,j):
