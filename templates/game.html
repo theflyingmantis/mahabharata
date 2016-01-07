@@ -6,7 +6,8 @@
 </head>
 <body onclick="show_coordinate(event)">
 <img src="hex_bg.gif" id="back">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
 <script>
 function show_coordinate(event)
 {
@@ -35,19 +36,11 @@ for(var j=0;j<11;j++)
 		var left1 = 159 - (i-1) * 14 + j * 14;
 		left1 += "px";
 		document.getElementById(id).style.left = left1;
-		document.getElementById(id).onclick=foo;
+		
 	}
 }
 </script>
 
-<script>
-function foo()
-{
-	var a=this.value;
-	alert(a);
-
-}
-</script>
 
 <script>
 var turn=1;
@@ -65,6 +58,7 @@ function load(){
 			{
 				console.log("red"+answer.output);
 				turn=0;
+				document.getElementById(answer.output).src = "hex_r.gif";
 				//alert("turn"+turn);
 				//if(answer.file_changed==1)
 				//	{alert("Red Changed the file and thus lost. Blue is winner");clearTimeout(f);
@@ -85,7 +79,7 @@ function load(){
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
-				document.getElementById(answer.output).src = "hex_r.gif";
+				
 				//var k=answer.w;//*****************make it
 				//$('#').html(answer.ans);
 			},
@@ -111,6 +105,7 @@ function load(){
 			{
 				console.log("blue"+answer);
 				turn=1;
+				document.getElementById(answer.output).src = "hex_b.gif";
 				if(answer.win==1)
 					{clearTimeout(f);
 					//*************************DO SOMETHING SOMETHINg :P
@@ -133,7 +128,7 @@ function load(){
 					var k=answer.output;
 					console.log(k);
 					//k = k.substring(0, k.length - 1);
-					document.getElementById(answer.output).src = "hex_b.gif";
+					
 				
 			},
 			error: function(err)
@@ -160,7 +155,7 @@ function load(){
 </html>
 
 
-
+<!-- c9a029b7ad90d8f1d26d48896e38b081dd501851 -->
 
 
 

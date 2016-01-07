@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Bot Vs U</title>
+	<title>Human Vs U</title>
 </head>
 <body onclick="show_coordinate(event)">
 <img src="hex_bg.gif" id="back">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
 <script>
 function bar(k){
 			console.log("In Bar");
@@ -21,7 +22,7 @@ function bar(k){
 			{
 				var flag=0;
 				console.log("Blue"+answer.output);
-				
+				document.getElementById(answer.output).src = "hex_b.gif";
 			if(answer.wrong_selected==1)
 					{alert("Blue Overwrote and thus lost. Red is winner");flag=1;
 					}
@@ -34,10 +35,9 @@ function bar(k){
 						alert("Blue WON!!");
 					flag=1;
 					}
-					document.getElementById(answer.output).src = "hex_b.gif";
+					
 					$("form").unbind('submit');
-					if(flag!=1)
-						load();
+				
 			},
 			error: function(err)
 			{
