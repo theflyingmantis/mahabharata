@@ -3,10 +3,16 @@
 <head>
 	<title>Human Vs U</title>
 </head>
-<body onclick="show_coordinate(event)">
-<img src="hex_bg.gif" id="back">
+<body>
+<img src="hex_bg.gif">
 <script type=text/javascript src="{{
   url_for('static', filename='jquery.js') }}"></script>
+  <div align="center">
+<div align="center" id="player">
+<audio controls autoplay>
+  <source src="got.mp3" type="audio/mpeg" align="center"><br>
+Your browser does not support the audio element.
+</audio>
 <script>
 function bar(k){
 			console.log("In Bar");
@@ -133,7 +139,7 @@ Click On the cell !!
 
 
 
-<div align="right">Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</div>
+<div align="right"><h3>Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</h3></div>
 
 
 

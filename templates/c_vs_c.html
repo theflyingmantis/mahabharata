@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<div align="center">
+
+<div align="center" id="player">
+<audio controls autoplay>
+  <source src="nimble2.mp3" type="audio/mpeg" align="center">
+Your browser does not support the audio element.
+</audio>
+<br>
 <h3>Enter Details</h3>
+</div>
 <form action="" method="POST" id="loginform">
 	<font color="red">
 	Player 1: <input type = 'text' name='p1' placeholder="Player 1 Name"><br>
@@ -13,4 +22,5 @@
 	</font>
 	<input type="submit" value="Play">
 </form>
+</div>
 {%endblock%}
