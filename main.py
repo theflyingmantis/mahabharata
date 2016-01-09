@@ -86,7 +86,16 @@ def game():
 def game3():
 	call(["python","new_file.py"])
 	return render_template('game3.html')
-	
+
+import re
+def find_word(text, search):
+
+   result = re.findall('\\b'+search+'\\b', text, flags=re.IGNORECASE)
+   if len(result)>0:
+      return True
+   else:
+      return False
+
 def check(i,j):
 	if i>10 or i<0:
 		return 0
@@ -95,27 +104,24 @@ def check(i,j):
 	return 1
 
 def dfs(i,j,lst):
-	if lst[i][j] == -1:
-		lst[i][j]==100
-		
 	lst[i][j]=10
 	if check(i+1,j):
-		if lst[i+1][j]==1 or lst[i+1][j]==-1:
+		if lst[i+1][j]==1:
 			dfs(i+1,j,lst)
 	if check(i-1,j):
-		if lst[i-1][j]==1 or lst[i-1][j]==-1:
+		if lst[i-1][j]==1:
 			dfs(i-1,j,lst)
 	if check(i,j+1):
-		if lst[i][j+1]==1 or lst[i][j+1]==-1:
+		if lst[i][j+1]==1:
 			dfs(i,j+1,lst)
 	if check(i,j-1):
-		if lst[i][j-1]==1 or lst[i][j-1]==-1:
+		if lst[i][j-1]==1:
 			dfs(i,j-1,lst)
 	if check(i-1,j+1):
-		if lst[i-1][j+1]==1 or lst[i-1][j+1]==-1:
+		if lst[i-1][j+1]==1:
 			dfs(i-1,j+1,lst)
 	if check(i+1,j-1):
-		if lst[i+1][j-1]==1 or lst[i+1][j-1]==-1:
+		if lst[i+1][j-1]==1:
 			dfs(i+1,j-1,lst)
 
 def check_blue():
@@ -127,20 +133,15 @@ def check_blue():
 	for i in range(0,11):
 		list_tmp=[]
 		for j in range(i*11+1,i*11+12):
-			if list1[j].find("B")!=-1 and i!=10:
+			if find_word(list1[j],"B"):
 				list_tmp.append(1)
-			elif list1[j].find("B")!=-1 and i==10:
-				list_tmp.append(-1)
-
 			else:
-				list_tmp.append(0)
-				
+				list_tmp.append(0)		
 		lst.append(list_tmp)
-	
+
 	for i in range(0,11):
 		if lst[0][i]==1:
 			dfs(0,i,lst)
-			
 	for i in range(0,11):
 		if lst[10][i]==10:
 			return 1
@@ -155,19 +156,15 @@ def check_red():
 	for i in range(0,11):
 		list_tmp=[]
 		for j in range(i*11+1,i*11+12):
-			if list1[j].find("R")!=-1 and j%11!=0:
+			if list1[j].find("R")!=-1:
 				list_tmp.append(1)
-			elif list1[j].find("R")!=-1 and j%11==0:
-				list_tmp.append(-1)
 			else:
-				list_tmp.append(0)
-				
+				list_tmp.append(0)		
 		lst.append(list_tmp)
-	
+
 	for i in range(0,11):
 		if lst[i][0]==1:
 			dfs(i,0,lst)
-	
 	for i in range(0,11):
 		if lst[i][10]==10:
 			return 1
@@ -184,7 +181,6 @@ def red():
 	list1=[]
 	list1=fob.readlines()
 	fn=file_name.split('.')
-	#*******************************CHECK FOR FILE CHANGE ----MAKE FUNCTION---Partially working----make file readonly!!
 	if extension=="cpp":
 		first="g++"
 		#call([first,file_name,"-o","red"])#***********************check and optimise it../?????????????????CHECK WHEN U WILL CALL THE FILE AND MAKE OPJECT FILE
@@ -195,10 +191,15 @@ def red():
 		output = output[:-1]
 	elif extension=="java":
 		output=check_output(["java",fn[0] ])
-		#***********************MAKE FOR JAVA ALSO
+	#print output
 	fob1=open('board_file.txt','r')
 	#*************************Check if we get any compilation error or while loop
 	output=output+" "
+	lose=0
+	lose1=0
+	if output==" ":
+		lose=1
+		#print "Red Lost!! - No Output"
 	list2=[]
 	list2=fob1.readlines()
 	file_changed=0
@@ -222,7 +223,7 @@ def red():
 	fob.close()
 	win=check_red()
 	output = output[:-1]
-	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag}
+	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag,"lose":lose}
 	return jsonify(data)
 
 @app.route("/blue_turn", methods=['GET', 'POST'])
@@ -245,6 +246,10 @@ def blue():
 	fob1=open('board_file.txt','r')
 	#*************************Check if we get any compilation error or while loop
 	output=output+" "
+	lose=0
+	if output==" ":
+		lose=1
+		#print "Blue Lost!! - No Output"
 	list2=[]
 	list2=fob1.readlines()
 	file_changed=0
@@ -260,6 +265,7 @@ def blue():
 				wrong_selected=1
 			list1[i]=list1[i].replace("U","B")
 			flag=1
+			break
 	list1[0]="1\n"
 	fob1.close()
 	fob.close()
@@ -271,7 +277,7 @@ def blue():
 	#***************Check if he has won - IF YES, Then make win variable =1;-----------TEsting left
 	
 	output = output[:-1]
-	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag}
+	data={"win":win,"output":output,"file_changed":file_changed,"wrong_selected":wrong_selected,"flag":flag,"lose":lose}
 	return jsonify(data)
 
 @app.route("/blue_turn_human")
@@ -334,4 +340,4 @@ def hum1():
 
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=True,port=12345, use_reloader=True)

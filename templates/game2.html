@@ -211,7 +211,11 @@ function load(){
 			{
 				console.log("red"+answer.output);
 				turn=0;
+				if(answer.lose==1)
+				{alert("Red Gave No Output - Thus Lost.Blue is Winner");console.log("No Output by Blue");clearTimeout(f);}
 				
+				var myElem = document.getElementById(answer.output);
+				if (myElem === null) {alert('Wrong Output By Red. Blue  Won');clearTimeout(f);}
 				document.getElementById(answer.output).src = "hex_r.gif";
 				var flag=0;
 			if(answer.wrong_selected==1)

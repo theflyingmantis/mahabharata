@@ -12,7 +12,8 @@
 <audio controls>
   <source src="lean.mp3" type="audio/mpeg" align="center"><br>
 Your browser does not support the audio element.
-</audio>
+</audio></div>
+<div id="Para">Red Turn</div>
 <script>
 function show_coordinate(event)
 {
@@ -40,8 +41,7 @@ for(var j=0;j<11;j++)
 		document.getElementById(id).style.top = top1;
 		var left1 = 159 - (i-1) * 14 + j * 14;
 		left1 += "px";
-		document.getElementById(id).style.left = left1;
-		
+		document.getElementById(id).style.left = left1;	
 	}
 }
 </script>
@@ -49,7 +49,7 @@ for(var j=0;j<11;j++)
 
 <script>
 var turn=1;
-var f=setInterval(load,350);
+var f=setInterval(load,500);
 function load(){
 	if(turn==1)
 	{
@@ -63,12 +63,17 @@ function load(){
 			{
 				console.log("red"+answer.output);
 				turn=0;
+				document.getElementById("Para").innerHTML="Blue's Turn";
+				if(answer.lose==1)
+				{alert("Red Gave No Output - Thus Lost. Blue {{p2}} is Winner");console.log("No Output by Red");clearTimeout(f);}
+				var myElem = document.getElementById(answer.output);
+				if (myElem === null) {alert('Wrong Output by Red. Blue {{p2}} Won');clearTimeout(f);}
+				
 				document.getElementById(answer.output).src = "hex_r.gif";
-				//alert("turn"+turn);
-				//if(answer.file_changed==1)
-				//	{alert("Red Changed the file and thus lost. Blue is winner");clearTimeout(f);
-				//*************DO SOMETHING MORE
-				//	}
+				
+				if(answer.file_changed==1)
+					{alert("Red Changed the file and thus lost. Blue is winner");clearTimeout(f);
+					}
 			if(answer.wrong_selected==1)
 					{alert("Red Overwrote and thus lost. Blue is winner");clearTimeout(f);
 				//*************DO SOMETHING MORE
@@ -108,14 +113,15 @@ function load(){
 			data: {file_name: p2f,extension:ext2 },
 			success: function(answer)
 			{
-				console.log("blue"+answer);
+				console.log("blue"+answer.output);
 				turn=1;
+				document.getElementById("Para").innerHTML="Red's Turn";
+				if(answer.lose==1)
+				{alert("Blue Gave No Output - Thus Lost. Red {{p1}} is Winner");console.log("No Output by Blue");clearTimeout(f);}
 				document.getElementById(answer.output).src = "hex_b.gif";
-				if(answer.win==1)
-					{clearTimeout(f);
-					//*************************DO SOMETHING SOMETHINg :P
-
-					}
+				var myElem = document.getElementById(answer.output);
+				if (myElem === null) {alert('Wrong Output By BLUE. Red {{p1}} Won');clearTimeout(f);}
+				
 				if(answer.wrong_selected==1)
 					{alert("Blue Overwrote and thus lost. Red is winner");clearTimeout(f);
 				//*************DO SOMETHING MORE
@@ -130,8 +136,6 @@ function load(){
 					//*************************DO SOMETHING SOMETHINg :P
 
 					}
-					var k=answer.output;
-					console.log(k);
 					//k = k.substring(0, k.length - 1);
 					
 				
@@ -148,6 +152,7 @@ function load(){
 </script>
 
 <h1>{{p1}} Vs {{p2}}</h1>
+
 <font color="Red">Player 1 = {{p1}}</font><br>
 <font color="blue">Player 2={{p2}}</font>
 <div align="right">Made By Abhinav Rai<br>Special thanks to Ajeet Goyal for grid design help.</div>
